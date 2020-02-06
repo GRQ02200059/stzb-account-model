@@ -4,9 +4,11 @@ general_id_value = {"步刘备":5,"弓张机":5,"弓吕蒙":5,"弓孙权":4,"骑
                         "弓吕布":4,"骑马超":4,"骑张辽":4,"步貂蝉":4,"弓诸葛亮":4,"骑徐庶":3,}
 hero_id_state = {1:"弓",2:"步",3:"骑"}
 def general_value(value_text):
+    hero_total_list = {}
     general_list = re.findall("{\\\"hit_range[^}]*}",value_text)
     value = 0 #综合价值
     key_num = 0 #核心数量
+    description = "缺少"
     for general in general_list:     #单个解析将领
         #判断如果不是五星就就不考虑
         quality = re.search("\\\"quality\\\":([^,]*)", general).group(1)
@@ -22,12 +24,20 @@ def general_value(value_text):
         hero_state = hero_id_state[int(hero_state)] + name
         #判断觉醒次数
         advance_num = re.search("\\\"advance_num\\\":([^,]*)",general).group(1)
-        if hero_state in general_id_value.keys():
-            value += (3 + int(advance_num)) * int(general_id_value[hero_state])
-            key_num += 1;
+        if hero_state not in hero_total_list:
+            hero_total_list[hero_state] = 0
+        hero_total_list[hero_state] += int(advance_num) + 1
+    for general in hero_total_list: #将所有将领去重后统计
+        if general in general_id_value:
+            value += general_id_value[general] * (3 + hero_total_list[general])
+            key_num += 1
         else:
-            value += 3 + int(advance_num)
-    return (value,key_num)
+            value += 3 + hero_total_list[general]
+
+    for general in general_id_value: #判断少几个核心将
+        if general not in hero_total_list:
+            description = description + "," + general
+    return (value,key_num,description)
 
 
 if __name__ == '__main__':

@@ -7,8 +7,8 @@ import re
 import general_analyze as ga
 #定义账号数据类型
 Account_list = pd.DataFrame(columns = ("seller_roleid","seller_name","price","first_onsale_price","area_name",
-                                       "collect_num","key_num","general_value","skill_value"))
-
+                                       "collect_num","key_num","general_value","description"))
+PATH = "./Account2.csv"
 
 def Download(url):
     head = {
@@ -17,8 +17,6 @@ def Download(url):
     return requests.get(url, headers=head, timeout=60)
 
 #提取出所有武将信息
-def skill_value(value_text):
-    return 1;
 #对每个账号信息的解析字符串进行处理
 def AccountSolve(Account_info):
     Account_info = Account_info["equip"]
@@ -26,8 +24,8 @@ def AccountSolve(Account_info):
     if int(Account_info["price"]) / 100 >= 4000:
         return
     value_text = Account_info["equip_desc"]  #包含账号价值的字符串
-    key_num,hero_value = ga.general_value(value_text)
-    tmpAccount = pd.DataFrame([[Account_info["seller_roleid"], #用户ID
+    hero_value,key_num,description = ga.general_value(value_text)
+    tmpAccount = pd.DataFrame([[Account_info["game_ordersn"], #用户ID
                                 Account_info["seller_name"], #用户名
                                 int(Account_info["price"]) / 100,   #价格(元)
                                 int(Account_info["first_onsale_price"]) / 100, #首次上架价格
@@ -35,11 +33,12 @@ def AccountSolve(Account_info):
                                 Account_info["collect_num"], #收藏人数
                                 key_num,
                                 hero_value,
-                                skill_value(value_text),
+                                description,
                                ]],
                               columns = ("seller_roleid","seller_name","price","first_onsale_price","area_name",
-                                         "collect_num","key_num","general_value","skill_value"))
-    Account_list = Account_list.append(tmpAccount,ignore_index = True)
+                                         "collect_num","key_num","general_value","description"))
+    #Account_list = Account_list.append(tmpAccount,ignore_index = True)
+    tmpAccount.to_csv(PATH,mode = 'a',index = True,header=False)
 
 
 
@@ -73,14 +72,13 @@ def Pagework(page_info):
 def main():
     pagestart = int(input('输入你想从哪页开始找'))
     pageend = int(input('输入你想到哪页结束'))
+    Account_list.to_csv(PATH, mode='a', index=True)
     for now_page in range(pagestart,pageend + 1):
         url = "https://stzb.cbg.163.com/cgi/api/query?view_loc=equip_list&platform_type=1&order_by=selling_time%20DESC&page=" + str(now_page)
         html = Download(url)
         print('当前正在第%d页寻找' % now_page)
         if(html):
             Pagework(json.loads(html.text))
-    print(Account_list.head(15))
-    Account_list.to_excel("./{pagestart}-{pageend}.xlsx")
 
 if __name__ == '__main__':
     main()

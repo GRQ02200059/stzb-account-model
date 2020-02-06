@@ -5,10 +5,11 @@ import pandas as pd
 import numpy as np
 import re
 import general_analyze as ga
+import tkinter
 #定义账号数据类型
 Account_list = pd.DataFrame(columns = ("seller_roleid","seller_name","price","first_onsale_price","area_name",
                                        "collect_num","key_num","general_value","description"))
-PATH = "./Account2.csv"
+PATH = "./Account.csv"
 
 def Download(url):
     head = {
@@ -67,6 +68,17 @@ def Pagework(page_info):
         Accounturl = "https://stzb.cbg.163.com/cgi/mweb/equip/1/%(name)s?view_loc=equip_list" % {'name':id}
         pageurl = "https://stzb.cbg.163.com/cgi/api/get_equip_detail"
         PostAccount(pageurl,id,Accounturl)
+
+def startload(pagestart,pageend):
+    Account_list.to_csv(PATH, mode='a', index=True)
+    for now_page in range(int(pagestart), int(pageend) + 1):
+        url = "https://stzb.cbg.163.com/cgi/api/query?view_loc=equip_list&platform_type=1&order_by=selling_time%20DESC&page=" + str(
+            now_page)
+        html = Download(url)
+        #print('当前正在第%d页寻找' % now_page)
+        if (html):
+            Pagework(json.loads(html.text))
+
 
 #进入ios账号的主页并且动态获取每个页面包含账号的id
 def main():

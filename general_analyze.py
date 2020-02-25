@@ -22,6 +22,9 @@ def general_value(value_text):
         #判断是骑步弓中哪个
         hero_state = re.search("\\\"hero_type\\\":([^,]*)",general).group(1)
         hero_state = hero_id_state[int(hero_state)] + name
+        #判断国家
+        hero_country = re.search("\\\"country\\\":([^,]*)", general).group(1)
+        #print(name,hero_country)
         #判断觉醒次数
         advance_num = re.search("\\\"advance_num\\\":([^,]*)",general).group(1)
         if hero_state not in hero_total_list:

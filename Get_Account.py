@@ -9,7 +9,7 @@ import tkinter
 #定义账号数据类型
 Account_list = pd.DataFrame(columns = ("seller_roleid","seller_name","price","first_onsale_price","area_name",
                                        "collect_num","key_num","general_value","description"))
-PATH = "./Account_info.csv"
+PATH = "data/Account_info.txt"
 
 def Download(url):
     head = {
@@ -79,10 +79,15 @@ def Get_Hero_Skill_Num(Account_info,Accountmat):
 def Account_analyze(Account_info):
     global AttributeIndex
     Accountmat = np.zeros((len(AttributeIndex)))
+    Accountmat = Accountmat.tolist()
     Account_info = Account_info["equip"]
     Accountmat[AttributeIndex["price"]] = int(Account_info["price"]) / 100
     Get_Hero_Skill_Num(Account_info["equip_desc"],Accountmat)
-    np.savetxt(PATH,Accountmat,delimiter = '\n',newline = '\t')
+    f = open(PATH, 'at')
+    for i in Accountmat:
+        f.write(str(i) + ' ')
+    f.write('\n')
+    f.close()
 #通过将每个id发送给服务器的方式 获取每个账号的详细信息
 def PostAccount(pageurl,Accountid,Accounturl):
     head = {
@@ -121,7 +126,7 @@ def startload(pagestart,pageend):
 
 #获取属性集
 def Get_Attribute():
-    fr = open('Attribute_Set.txt')
+    fr = open('data/Attribute_Set.txt')
     AttributeIndex = {}
     for line in fr.readlines():
         curLine = line.strip().split('\t')

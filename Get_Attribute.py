@@ -109,7 +109,7 @@ def main():
         print('当前正在第%d页寻找' % now_page)
         if(html):
             Pagework(json.loads(html.text))
-    f = open('Attribute_Set.txt', 'w')
+    f = open('data/Attribute_Set.txt', 'w')
     for key in AttributeIndex: #输出获取到的属性集
         f.write(str(key) + '\t' + str(AttributeIndex[key]) + '\n')
     f.close()

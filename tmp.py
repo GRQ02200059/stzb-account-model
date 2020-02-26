@@ -1,7 +1,4 @@
-import numpy as np
-
-dic = {'asd':1}
-x = np.zeros((5))
-x[dic['asd']] = 2
-x[1] = 3
-print(x)
+from numpy import *
+a = [[-1,-2,-3],[4,5,6],[7,8,9]]
+b = mat(a)
+print(power(b,2))

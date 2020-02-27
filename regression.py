@@ -24,10 +24,10 @@ def checkvar(var):
     for i in range(n):
         for j in range(m):
             if(var[i,j] == 0):
-                var[i,j] = 0.0000000000000001
+                var[i,j] = 0.000000000000000000000000000001
 #岭回归
 #当特征比样例多的时候,将矩阵加上一个对角线lam其他全0的矩阵
-def ridgeRegres(xMat,yMat,lam = 0.000002): #计算回归函数
+def ridgeRegres(xMat,yMat,lam = 0.00002): #计算回归函数
     xTx = xMat.T * xMat
     denom = xTx + eye(shape(xMat)[1]) * lam
     if linalg.det(denom) == 0.0:
@@ -50,11 +50,11 @@ def ridgeTest(xArr,yArr,numTestPts = 50): #在一组lam上测试结果
     xMat = (xMat - xMeans) / xVar
     wMat = zeros((numTestPts,shape(xMat)[1]))
     for i in range(numTestPts):
-        ws = ridgeRegres(xMat,yMat,exp(i-20))
+        ws = ridgeRegres(xMat,yMat,exp(i-10))
         wMat[i,:]=ws.T
     return wMat
 
-def crossValidation(dataset,ans,numVal = 100): #交叉测试岭回归
+def crossValidation(dataset,ans,numVal = 30): #交叉测试岭回归
     n = len(ans)
     #print("n = ",n)
     indexList = [i for i in range(n)]
@@ -111,5 +111,4 @@ if __name__ == '__main__':
     f.close()
     Hatans = dataset * w.T + c
     print(format(rssError(ans,Hatans),'.3e'))
-    #print((ans - Hatans))
 

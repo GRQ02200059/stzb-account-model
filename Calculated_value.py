@@ -12,14 +12,17 @@ if __name__ == '__main__':
     wmat = np.mat(w)
     dataset,ans = loadDataSet('data/Account_info.txt')
     Hatans = dataset * wmat.T + c
-    #for i in range(0,1000):
+    #for i in range(0,3000):
         #print(int(Hatans[i,0]),' ',ans[i])
     n,m = np.shape(wmat)
     AttributeIndex = Get_Attribute()
     IndexAttribute = {}
     for key in AttributeIndex:
         IndexAttribute[int(AttributeIndex[key])] = key
-    #print(IndexAttribute[1])
-    for i in range(m):
-        if(wmat[0,i] > 10):
-            print(IndexAttribute[i])
+    sorted_nums = sorted(enumerate(w), key=lambda x: x[1])
+    idx = [i[0] for i in sorted_nums]
+    nums = [i[1] for i in sorted_nums]
+    #print(idx)
+    for i in idx:
+        print(IndexAttribute[i],'   ',w[i])
+    #print(IndexAttribute[i])

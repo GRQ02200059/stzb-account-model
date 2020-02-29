@@ -9,7 +9,7 @@ import tkinter
 #定义账号数据类型
 Account_list = pd.DataFrame(columns = ("seller_roleid","seller_name","price","first_onsale_price","area_name",
                                        "collect_num","key_num","general_value","description"))
-PATH = "data/Account_info.txt"
+PATH = "data/Account_tmp.txt"
 
 def Download(url):
     head = {
@@ -41,6 +41,7 @@ def AccountSolve(Account_info):
 AttributeIndex = {}
 hero_id_state = {1:"弓",2:"步",3:"骑"}
 hero_id_country = {1:"汉",2:"魏",3:"蜀",4:"吴",5:"群"}
+#获取账号的全部信息并且保存在向量中
 def Get_Hero_Skill_Num(Account_info,Accountmat):
     global AttributeIndex
     yu_fu = re.search("\\\"yuan_bao\\\":([^,]*)",Account_info).group(1)

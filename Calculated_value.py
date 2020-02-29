@@ -10,10 +10,11 @@ if __name__ == '__main__':
     for i in Line: w.append(float(i))
     c = float(text[1])
     wmat = np.mat(w)
-    dataset,ans = loadDataSet('data/Account_info.txt')
+    dataset,ans = loadDataSet('data/Account_tmp.txt')
     Hatans = dataset * wmat.T + c
-    #for i in range(0,3000):
-        #print(int(Hatans[i,0]),' ',ans[i])
+    for i in range(0,30):
+        #if(Hatans[i,0] > ans[i] * 0.95 and ans[i] < 3000):
+        print(int(Hatans[i,0]),' ',ans[i])
     n,m = np.shape(wmat)
     AttributeIndex = Get_Attribute()
     IndexAttribute = {}
@@ -23,6 +24,6 @@ if __name__ == '__main__':
     idx = [i[0] for i in sorted_nums]
     nums = [i[1] for i in sorted_nums]
     #print(idx)
-    for i in idx:
-        print(IndexAttribute[i],'   ',w[i])
+    #for i in idx:
+        #print(IndexAttribute[i],'   ',w[i])
     #print(IndexAttribute[i])

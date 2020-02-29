@@ -27,6 +27,7 @@ def AttributeInit():
 #对属性集的完善
 hero_id_state = {1:"弓",2:"步",3:"骑"}
 hero_id_country = {1:"汉",2:"魏",3:"蜀",4:"吴",5:"群"}
+#获取武将组
 def Attribute_Hero(Account_info):
     global AttributeNum
     Hero_List = re.findall("{\\\"hit_range[^}]*}", Account_info)
@@ -45,6 +46,7 @@ def Attribute_Hero(Account_info):
         if name not in AttributeIndex:
             AttributeNum += 1
             AttributeIndex[name] = AttributeNum
+#获取技能组
 def Attribute_Skill(Account_info):
     global AttributeNum
     Skill_List = re.findall("{\\\"skill_type[^}]*}", Account_info)

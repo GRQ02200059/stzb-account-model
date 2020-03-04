@@ -9,7 +9,7 @@ def loadDataSet(fileName):
     for line in fr.readlines():
         lineArr = []
         curLine = line.strip().split(' ')
-        for i in range(numFeat):
+        for i in range(numFeat - 1):
             lineArr.append(float(curLine[i]))
         dataMat.append(lineArr)
         labelMat.append(float(curLine[-1]))
